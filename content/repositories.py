@@ -2,18 +2,20 @@ from abc import ABC
 from profile import Profile
 from typing import List, Any
 
+from django.db.models import QuerySet
+
 from content.models import Illustration, New, Review, Video
 from socials.utils import IRepository
 
 
 class IContentRepository(IRepository, ABC):
-    def get_by_author(self, author: Profile) -> List[Any]:
+    def get_by_author(self, author: Profile) -> QuerySet:
         return self.model.objects.filter(author=author)
 
-    def get_by_game(self, game_title: str) -> List[Any]:
+    def get_by_game(self, game_title: str) -> QuerySet:
         return self.model.objects.filter(game_title=game_title)
 
-    def get_likers(self, post: Any) -> List[Profile]:
+    def get_likers(self, post: Any) -> QuerySet:
         if post in self.list():
             return post.likes.all()
 
