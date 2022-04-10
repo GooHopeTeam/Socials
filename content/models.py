@@ -13,6 +13,9 @@ class Illustration(models.Model):
     game_title = models.CharField(max_length=64)
     image = models.ImageField(upload_to=upload_path)
 
+    def __str__(self):
+        Illustration.objects.cre
+
 
 class IllustrationLike(models.Model):
     user = models.ForeignKey(Profile, on_delete=models.SET_NULL, null=True, default=None)

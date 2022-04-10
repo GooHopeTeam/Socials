@@ -1,9 +1,9 @@
-from abc import ABC, abstractmethod
+from abc import ABC
 from profile import Profile
-from typing import List, Union, Any
+from typing import List, Any
 
+from content.models import Illustration, New, Review, Video
 from socials.utils import IRepository
-from .models import New, Video, Illustration, Review
 
 
 class IContentRepository(IRepository, ABC):
@@ -13,45 +13,26 @@ class IContentRepository(IRepository, ABC):
     def get_by_game(self, game_title: str) -> List[Any]:
         return self.model.objects.filter(game_title=game_title)
 
-    @abstractmethod
     def get_likers(self, post: Any) -> List[Profile]:
-        pass
+        if post in self.list():
+            return post.likes.all()
 
-    @abstractmethod
-    def is_liked(self, profile: Profile) -> bool:
-        pass
+    def is_liked(self, post: Any, profile: Profile) -> bool:
+        if post in self.list():
+            return post.likes.filter(user=profile).exists()
 
 
-class NewsRepository(IContentRepository):
+class IllustrationRepository(IContentRepository):
+    model = Illustration
+
+
+class NewRepository(IContentRepository):
     model = New
 
-    def get_likers(self, post: New) -> List[Profile]:
-        likers = post.liked
 
-    def is_liked(self, profile: Profile) -> bool:
-        pass
+class VideoRepository(IContentRepository):
+    model = Video
 
-    def get(self, pk: int) -> Union[New, None]:
-        try:
-            return self.model.objects.get(id=pk)
-        except self.model.DoesNotExist:
-            return None
 
-    def list(self) -> List:
-        return self.model.objects.all()
-
-    def save(self, news: New) -> None:
-        news.save()
-
-    def delete(self, news: New = None, pk: int = None):
-        if news:
-            news.delete()
-        elif pk:
-            news = self.get(pk)
-            if news:
-                self.delete(news)
-        else:
-            raise AttributeError
-
-    def create(self, **kwargs):
-        raise NotImplementedError
+class ReviewRepository(IContentRepository):
+    model = Review
