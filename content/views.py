@@ -1,11 +1,11 @@
 from rest_framework.viewsets import mixins, GenericViewSet
 
-from .models import Illustrations, News, Videos, Reviews
-from .serializers import ReviewsSerializer, IllustrationSerializer, VideosSerializer, NewsSerializer
+from .models import Illustration, New, Video, Review
+from .serializers import ReviewSerializer, IllustrationSerializer, VideoSerializer, NewsSerializer
 
 
 class IllustrationViewSet(mixins.RetrieveModelMixin,
                           mixins.ListModelMixin,
                           GenericViewSet):
-    queryset = Illustrations.objects.all()
+    queryset = Illustration.objects.all()
     serializer_class = IllustrationSerializer

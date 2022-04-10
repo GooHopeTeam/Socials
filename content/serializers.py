@@ -1,27 +1,27 @@
 from rest_framework import serializers
 
-from .models import Illustrations, News, Reviews, Videos
+from .models import Illustration, New, Review, Video
 
 
 class IllustrationSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Illustrations
+        model = Illustration
         fields = '__all__'
 
 
-class VideosSerializer(serializers.ModelSerializer):
+class VideoSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Videos
+        model = Video
         fields = '__all__'
 
 
 class NewsSerializer(serializers.ModelSerializer):
     class Meta:
-        model = News
+        model = New
         fields = '__all__'
 
 
-class ReviewsSerializer(serializers.ModelSerializer):
+class ReviewSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Reviews
+        model = Review
         fields = '__all__'

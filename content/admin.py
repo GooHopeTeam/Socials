@@ -1,7 +1,7 @@
 from django.contrib import admin
-from .models import Videos, Illustrations, Reviews, News
+from .models import Video, Illustration, Review, New
 
-admin.site.register(Videos)
-admin.site.register(Illustrations)
-admin.site.register(Reviews)
-admin.site.register(News)
+admin.site.register(Video)
+admin.site.register(Illustration)
+admin.site.register(Review)
+admin.site.register(New)

@@ -1,4 +1,4 @@
-from typing import Any, List, Union
+from typing import List, Union
 
 from socials.utils import IRepository
 from .models import Profile
@@ -24,9 +24,10 @@ class ProfileRepository(IRepository):
             profile.delete()
         elif pk:
             profile = self.get(pk)
-            self.delete(profile)
+            if profile:
+                self.delete(profile)
         else:
-            raise AttributeError("Need 1 of 2 arguments")
+            raise AttributeError
 
     def create(self, **kwargs):
         raise NotImplementedError
