@@ -6,15 +6,19 @@ from rest_framework.response import Response
 from rest_framework.viewsets import mixins, GenericViewSet
 
 from friends.models import Friends
+from socials.utils import IRepositoryExtender
 from .models import Profile, Society
-from .serializers import UserSerializer
+from .serializers import ProfileSerializer
+from .repositories import ProfileRepository
 
 
-class ProfileViewSet(mixins.RetrieveModelMixin,
+class ProfileViewSet(IRepositoryExtender,
+                     mixins.RetrieveModelMixin,
                      mixins.ListModelMixin,
                      GenericViewSet):
+    repository = ProfileRepository
     queryset = Profile.objects.all()
-    serializer_class = UserSerializer
+    serializer_class = ProfileSerializer
 
     @staticmethod
     def visibility_regulator(user: Profile.objects, profile: Profile) -> bool:
@@ -44,8 +48,8 @@ class ProfileViewSet(mixins.RetrieveModelMixin,
 
     def retrieve(self, request, *args, **kwargs):
         _id = kwargs.get('pk')
-
-        user = Profile.objects.get(id=settings.USER_ID)
+        user = self.repository.get(settings.USER_ID)
+        # user = Profile.objects.get(id=settings.USER_ID)
         profile = get_object_or_404(self.queryset, id=_id)
         _profile = model_to_dict(profile, ('avatar', 'login', 'status', 'description'))
         _profile['avatar'] = profile.avatar.name
