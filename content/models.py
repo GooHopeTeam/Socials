@@ -7,16 +7,32 @@ def upload_path(instance, name):
     return f'user_{instance.author.login}/{name}'
 
 
+class BaseLike:
+    objects, post, user = None, None, None
+
+    def like(self, user, post):
+        if self.objects.filter(user=user, post=post).exists():
+            self.objects.get(user=user, post=post).delete()
+        else:
+            self.objects.create(user=user, post=post).save()
+
+    def __str__(self):
+        return f'{self.user.login} - {self.post}'
+
+
 class Illustration(models.Model):
     author = models.ForeignKey(Profile, on_delete=models.CASCADE)
     title = models.CharField(max_length=64)
     game_title = models.CharField(max_length=64)
     image = models.ImageField(upload_to=upload_path)
 
+    def __str__(self):
+        return self.title
 
-class IllustrationLike(models.Model):
+
+class IllustrationLike(BaseLike, models.Model):
     user = models.ForeignKey(Profile, on_delete=models.SET_NULL, null=True, default=None)
-    illustration = models.ForeignKey(Illustration, on_delete=models.CASCADE, related_name='likes')
+    post = models.ForeignKey(Illustration, on_delete=models.CASCADE, related_name='likes')
 
 
 class Video(models.Model):
@@ -26,9 +42,9 @@ class Video(models.Model):
     video = models.FileField(upload_to=upload_path)
 
 
-class VideoLike(models.Model):
+class VideoLike(BaseLike, models.Model):
     user = models.ForeignKey(Profile, on_delete=models.SET_NULL, null=True, default=None)
-    video = models.ForeignKey(Video, on_delete=models.CASCADE, related_name='likes')
+    post = models.ForeignKey(Video, on_delete=models.CASCADE, related_name='likes')
 
 
 class New(models.Model):
@@ -39,9 +55,9 @@ class New(models.Model):
     image = models.ImageField(upload_to=upload_path, blank=True, null=True, default=None)
 
 
-class NewLike(models.Model):
+class NewLike(BaseLike, models.Model):
     user = models.ForeignKey(Profile, on_delete=models.SET_NULL, null=True, default=None)
-    new = models.ForeignKey(New, on_delete=models.CASCADE, related_name='likes')
+    post = models.ForeignKey(New, on_delete=models.CASCADE, related_name='likes')
 
 
 class Review(models.Model):
@@ -52,6 +68,6 @@ class Review(models.Model):
     image = models.ImageField(upload_to=upload_path, blank=True, null=True, default=None)
 
 
-class ReviewLike(models.Model):
+class ReviewLike(BaseLike, models.Model):
     user = models.ForeignKey(Profile, on_delete=models.SET_NULL, null=True, default=None)
-    review = models.ForeignKey(Review, on_delete=models.CASCADE, related_name='likes')
+    post = models.ForeignKey(Review, on_delete=models.CASCADE, related_name='likes')

@@ -1,5 +1,7 @@
 from abc import ABC, abstractmethod
-from typing import List, Any
+from typing import Any
+
+from django.db.models import QuerySet
 
 
 class IRepository(ABC):
@@ -17,7 +19,7 @@ class IRepository(ABC):
         except self.model.DoesNotExist:
             return None
 
-    def list(self) -> List:
+    def list(self) -> QuerySet:
         """ Return all objects from model """
         return self.model.objects.all()
 

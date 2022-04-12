@@ -1,11 +1,18 @@
 from django.contrib import admin
 from .models import Video, Illustration, Review, New, IllustrationLike, NewLike, VideoLike, ReviewLike
 
-admin.site.register(Video)
-admin.site.register(VideoLike)
-admin.site.register(Illustration)
-admin.site.register(IllustrationLike)
-admin.site.register(Review)
-admin.site.register(ReviewLike)
-admin.site.register(New)
-admin.site.register(NewLike)
+
+@admin.register(Video)
+@admin.register(Illustration)
+@admin.register(Review)
+@admin.register(New)
+class PostAdmin(admin.ModelAdmin):
+    list_display = ('title', 'game_title', 'author')
+
+
+@admin.register(VideoLike)
+@admin.register(IllustrationLike)
+@admin.register(ReviewLike)
+@admin.register(NewLike)
+class LikeAdmin(admin.ModelAdmin):
+    list_display = ('user', 'post')
