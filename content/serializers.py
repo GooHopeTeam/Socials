@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from .models import Illustration, New, Review, Video
+from .models import Illustration, News, Review, Video
 
 
 class IllustrationSerializer(serializers.ModelSerializer):
@@ -17,7 +17,7 @@ class VideoSerializer(serializers.ModelSerializer):
 
 class NewsSerializer(serializers.ModelSerializer):
     class Meta:
-        model = New
+        model = News
         fields = '__all__'
 
 

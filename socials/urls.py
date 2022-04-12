@@ -20,14 +20,17 @@ from django.conf.urls.static import static
 from rest_framework import routers
 
 from dialogs.views import DialogsViewSet
-from content.views import IllustrationViewSet
+from content.views import IllustrationViewSet, VideoViewSet, NewsViewSet, ReviewViewSet
 from society.views import ProfileViewSet
 
 router = routers.DefaultRouter(trailing_slash=False)
 
 router.register(r'profile', ProfileViewSet, basename='profile')
 router.register(r'dialogs', DialogsViewSet, basename='dialogs')
-router.register(r'illustrations', IllustrationViewSet, basename='illustrations')
+router.register(r'illustration', IllustrationViewSet, basename='illustrations')
+router.register(r'video', VideoViewSet, basename='video')
+router.register(r'review', ReviewViewSet, basename='review')
+router.register(r'news', NewsViewSet, basename='news')
 
 urlpatterns = [
     path('admin/', admin.site.urls),

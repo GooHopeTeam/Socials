@@ -24,10 +24,7 @@ class Illustration(models.Model):
     author = models.ForeignKey(Profile, on_delete=models.CASCADE)
     title = models.CharField(max_length=64)
     game_title = models.CharField(max_length=64)
-    image = models.ImageField(upload_to=upload_path)
-
-    def __str__(self):
-        return self.title
+    file = models.ImageField(upload_to=upload_path)
 
 
 class IllustrationLike(BaseLike, models.Model):
@@ -39,7 +36,7 @@ class Video(models.Model):
     author = models.ForeignKey(Profile, on_delete=models.CASCADE)
     title = models.CharField(max_length=64)
     game_title = models.CharField(max_length=64)
-    video = models.FileField(upload_to=upload_path)
+    file = models.FileField(upload_to=upload_path)
 
 
 class VideoLike(BaseLike, models.Model):
@@ -47,17 +44,20 @@ class VideoLike(BaseLike, models.Model):
     post = models.ForeignKey(Video, on_delete=models.CASCADE, related_name='likes')
 
 
-class New(models.Model):
+class News(models.Model):
+    class Meta:
+        verbose_name = 'News'
+        verbose_name_plural = 'News'
     author = models.ForeignKey(Profile, on_delete=models.CASCADE)
     title = models.CharField(max_length=64)
     game_title = models.CharField(max_length=64)
     content = models.TextField()
-    image = models.ImageField(upload_to=upload_path, blank=True, null=True, default=None)
+    file = models.ImageField(upload_to=upload_path, blank=True, null=True, default=None)
 
 
-class NewLike(BaseLike, models.Model):
+class NewsLike(BaseLike, models.Model):
     user = models.ForeignKey(Profile, on_delete=models.SET_NULL, null=True, default=None)
-    post = models.ForeignKey(New, on_delete=models.CASCADE, related_name='likes')
+    post = models.ForeignKey(News, on_delete=models.CASCADE, related_name='likes')
 
 
 class Review(models.Model):
@@ -65,7 +65,7 @@ class Review(models.Model):
     title = models.CharField(max_length=64)
     game_title = models.CharField(max_length=64)
     created = models.DateTimeField(auto_now_add=True)
-    image = models.ImageField(upload_to=upload_path, blank=True, null=True, default=None)
+    file = models.ImageField(upload_to=upload_path, blank=True, null=True, default=None)
 
 
 class ReviewLike(BaseLike, models.Model):
