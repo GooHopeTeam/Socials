@@ -13,7 +13,7 @@ class Dialog(models.Model):
         return f'{self.user.login} - {self.friend.login}'
 
 
-class Messages(models.Model):
+class Message(models.Model):
     dialog = models.ForeignKey(Dialog, on_delete=models.CASCADE)
     message = models.CharField(max_length=800)
     sender = models.ForeignKey(Profile, on_delete=models.PROTECT)

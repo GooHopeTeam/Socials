@@ -39,7 +39,7 @@ class IRepository(ABC):
 
     def create(self, **kwargs) -> int:
         """ Create object with params """
-        self.save(self.model.objects.create(kwargs))
+        self.save(self.model.objects.create(**kwargs))
 
         return status.HTTP_201_CREATED
 

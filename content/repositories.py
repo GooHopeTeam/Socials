@@ -4,7 +4,6 @@ from typing import List, Any, Dict
 
 from django.db.models import QuerySet
 from django.forms import model_to_dict
-from rest_framework import status
 
 from content.models import Illustration, News, Review, Video
 from socials.utils import IRepository
