@@ -2,6 +2,8 @@ from django.db import models
 
 from society.models import Profile
 
+from.validators import validate_file_extension
+
 
 def upload_path(instance, name):
     return f'user_{instance.author.login}/{name}'
@@ -24,7 +26,7 @@ class Illustration(models.Model):
     author = models.ForeignKey(Profile, on_delete=models.CASCADE)
     title = models.CharField(max_length=64)
     game_title = models.CharField(max_length=64)
-    file = models.ImageField(upload_to=upload_path)
+    file = models.ImageField(upload_to=upload_path, validators=[validate_file_extension])
 
 
 class IllustrationLike(BaseLike, models.Model):
