@@ -21,12 +21,14 @@ class DialogRepository(IRepository):
                                                     friend=ProfileRepository().get(kwargs.get('friend')))
 
     def get(self, pk: int) -> Any:
-        if super(DialogRepository, self).get(pk) not in self.list():
-            return Response({
-                'detail': 'Unable to start conversation. No user found or you do not have access to this conversation.'
-            }, status=status.HTTP_403_FORBIDDEN)
-        return None
+        dialog = super(DialogRepository, self).get(pk)
+        if dialog not in self.list():
+            return None
+        return dialog
 
 
 class MessagesRepository(IRepository):
     model = Message
+
+    def list(self) -> QuerySet:
+        return super(MessagesRepository, self).list().filter(dialog__user=ProfileRepository().get(settings.USER_ID))
