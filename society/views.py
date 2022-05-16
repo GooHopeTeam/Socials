@@ -8,8 +8,8 @@ from rest_framework.viewsets import mixins, GenericViewSet
 from friends.models import Friends
 from socials.utils import IRepositoryExtender
 from .models import Profile, Society
-from .serializers import ProfileSerializer
-from .repositories import ProfileRepository
+from .serializers import ProfileSerializer, SocietySerializer
+from .repositories import ProfileRepository, SocietyRepository
 
 
 class ProfileViewSet(IRepositoryExtender,
@@ -49,7 +49,6 @@ class ProfileViewSet(IRepositoryExtender,
     def retrieve(self, request, *args, **kwargs):
         _id = kwargs.get('pk')
         user = self.repository.get(settings.USER_ID)
-        # user = Profile.objects.get(id=settings.USER_ID)
         profile = get_object_or_404(self.queryset, id=_id)
         _profile = model_to_dict(profile, ('avatar', 'login', 'status', 'description'))
         _profile['avatar'] = profile.avatar.name
@@ -60,3 +59,15 @@ class ProfileViewSet(IRepositoryExtender,
             'friends': Profile.objects.filter(user_id__in=profile.friend.all().values('user_id')).values(),
             'societies': Society.objects.filter(societymembers__user=profile).values()
         }, status=status.HTTP_200_OK)
+
+
+class SocietyViewSet(IRepositoryExtender,
+                     mixins.RetrieveModelMixin,
+                     mixins.ListModelMixin,
+                     mixins.CreateModelMixin,
+                     mixins.UpdateModelMixin,
+                     mixins.DestroyModelMixin,
+                     GenericViewSet):
+    repository = SocietyRepository
+    queryset = Society.objects.all()
+    serializer_class = SocietySerializer
