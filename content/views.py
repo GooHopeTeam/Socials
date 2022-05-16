@@ -13,6 +13,9 @@ from .serializers import ReviewSerializer, IllustrationSerializer, VideoSerializ
 class PostMixin(IRepositoryExtender,
                 mixins.RetrieveModelMixin,
                 mixins.ListModelMixin,
+                mixins.CreateModelMixin,
+                mixins.DestroyModelMixin,
+                mixins.UpdateModelMixin,
                 GenericViewSet, ABC):
     def list(self, request, *args, **kwargs):
         return Response(self.repository.get_all_posts(), status=status.HTTP_200_OK)

@@ -2,6 +2,8 @@ from abc import ABC, abstractmethod
 from typing import Any
 
 from django.db.models import QuerySet
+from django.shortcuts import get_object_or_404
+from rest_framework import status
 
 
 class IRepository(ABC):
@@ -14,10 +16,7 @@ class IRepository(ABC):
 
     def get(self, pk: int) -> Any:
         """ Return object by id """
-        try:
-            return self.model.objects.get(id=pk)
-        except self.model.DoesNotExist:
-            return None
+        return get_object_or_404(self.model, id=pk)
 
     def list(self) -> QuerySet:
         """ Return all objects from model """
@@ -38,9 +37,11 @@ class IRepository(ABC):
         else:
             raise AttributeError
 
-    def create(self, **kwargs) -> None:
+    def create(self, **kwargs) -> int:
         """ Create object with params """
-        self.save(self.model.objects.create(kwargs))
+        self.save(self.model.objects.create(**kwargs))
+
+        return status.HTTP_201_CREATED
 
 
 class IRepositoryExtender(ABC):

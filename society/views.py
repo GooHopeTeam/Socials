@@ -16,7 +16,7 @@ class ProfileViewSet(IRepositoryExtender,
                      mixins.RetrieveModelMixin,
                      mixins.ListModelMixin,
                      GenericViewSet):
-    repository = ProfileRepository
+    repository = ProfileRepository()
     queryset = Profile.objects.all()
     serializer_class = ProfileSerializer
 
