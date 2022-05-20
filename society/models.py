@@ -18,6 +18,8 @@ class Profile(models.Model):
     status = models.BooleanField(default=True)
     publicity = models.CharField(choices=publicity_choices, max_length=50)
     description = models.CharField(max_length=220, null=True, blank=True)
+    created = models.DateTimeField(auto_now_add=True)
+    updated = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return f'User: {self.user_id} {self.login} - {self.publicity}'

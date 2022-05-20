@@ -29,9 +29,11 @@ class IContentRepository(IRepository, ABC):
             yield self.get_post(elem.id)
 
     def get_post(self, pk: int) -> Dict:
-        post = model_to_dict(self.get(pk))
-        post['likes'] = len(self.get_likers(self.get(pk)))
+        post_obj = self.get(pk)
+        post = model_to_dict(post_obj)
+        post['likes'] = len(self.get_likers(post_obj))
         post['file'] = post['file'].url
+        post['author'] = post_obj.author.login
 
         return post
 
@@ -50,3 +52,6 @@ class VideoRepository(IContentRepository):
 
 class ReviewRepository(IContentRepository):
     model = Review
+
+
+

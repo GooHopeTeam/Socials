@@ -13,10 +13,10 @@ router = routers.DefaultRouter(trailing_slash=False)
 router.register(r'profile', ProfileViewSet, basename='profile')
 router.register(r'dialogs', DialogsViewSet, basename='dialogs')
 router.register(r'dialogs/(?P<dialog_id>.*)/messages', MessageViewSet, basename='messages')
-router.register(r'illustration', IllustrationViewSet, basename='illustrations')
-router.register(r'video', VideoViewSet, basename='video')
-router.register(r'review', ReviewViewSet, basename='review')
-router.register(r'news', NewsViewSet, basename='news')
+router.register(r'content/illustrations', IllustrationViewSet, basename='illustrations')
+router.register(r'content/videos', VideoViewSet, basename='video')
+router.register(r'content/reviews', ReviewViewSet, basename='review')
+router.register(r'content/news', NewsViewSet, basename='news')
 
 urlpatterns = [
     path('admin/', admin.site.urls),
