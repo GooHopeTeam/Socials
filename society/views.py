@@ -15,6 +15,7 @@ from .repositories import ProfileRepository, SocietyRepository
 class ProfileViewSet(IRepositoryExtender,
                      mixins.RetrieveModelMixin,
                      mixins.ListModelMixin,
+                     mixins.CreateModelMixin,
                      GenericViewSet):
     repository = ProfileRepository()
     queryset = Profile.objects.all()

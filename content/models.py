@@ -1,8 +1,11 @@
+import cv2
+import numpy as np
+from PIL import Image
 from django.db import models
 
 from society.models import Profile
 
-from.validators import validate_file_extension
+from .validators import validate_file_extension
 
 
 def upload_path(instance, name):
@@ -39,6 +42,16 @@ class Video(models.Model):
     title = models.CharField(max_length=64)
     game_title = models.CharField(max_length=64)
     file = models.FileField(upload_to=upload_path)
+    frame = models.ImageField(upload_to=upload_path, validators=[validate_file_extension], blank=True, null=True, default=None)
+
+    def save(self, force_insert=False, force_update=False, using=None, update_fields=None):
+        super(Video, self).save(force_update, force_update, using, update_fields)
+
+        cam = cv2.VideoCapture(self.file.path)
+        ret, frame = cam.read()
+
+        self.frame = Image.fromarray(np.uint8(frame)).convert('RGB')
+        self.save()
 
 
 class VideoLike(BaseLike, models.Model):
@@ -50,6 +63,7 @@ class News(models.Model):
     class Meta:
         verbose_name = 'News'
         verbose_name_plural = 'News'
+
     author = models.ForeignKey(Profile, on_delete=models.CASCADE)
     title = models.CharField(max_length=64)
     game_title = models.CharField(max_length=64)

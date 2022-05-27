@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 
 from pathlib import Path
 from datetime import datetime
+
 # from configparser import ConfigParser
 #
 # config = ConfigParser()
@@ -97,21 +98,19 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'socials.wsgi.application'
 
-
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
 
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'GooHope',
-        'USER': 'postgres',
+        'NAME': 'GooHope',  # 'socials'
+        'USER': 'postgres',  # 'ref0il'
         'PASSWORD': '1432qWWs',
         'HOST': '127.0.0.1',
         'PORT': '5432'
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/4.0/ref/settings/#auth-password-validators
@@ -131,7 +130,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/4.0/topics/i18n/
 
@@ -142,7 +140,6 @@ TIME_ZONE = 'UTC'
 USE_I18N = True
 
 USE_TZ = True
-
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
