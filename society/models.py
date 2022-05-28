@@ -13,7 +13,8 @@ class Profile(models.Model):
         return f'user_{self.login}/{args[0]}'
 
     user_id = models.IntegerField(unique=True)
-    login = models.CharField(max_length=30)
+    name = models.CharField(max_length=32)
+    login = models.CharField(max_length=32)
     avatar = models.ImageField(upload_to=upload_path, blank=True, null=True, default=None)
     status = models.BooleanField(default=True)
     publicity = models.CharField(choices=publicity_choices, max_length=50)
