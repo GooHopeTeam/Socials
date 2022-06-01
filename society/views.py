@@ -1,4 +1,3 @@
-from django.conf import settings
 from django.forms import model_to_dict
 from rest_framework import status
 from rest_framework.generics import get_object_or_404
@@ -48,16 +47,15 @@ class ProfileViewSet(IRepositoryExtender,
         return hidden
 
     def retrieve(self, request, *args, **kwargs):
-        _id = kwargs.get('pk')
-        user = self.repository.get(settings.USER_ID)
-        profile = get_object_or_404(self.queryset, id=_id)
+        user = get_object_or_404(self.queryset, user_id=request.query_params.get('user_id'))
+        profile = get_object_or_404(self.queryset, user_id=kwargs.get('pk'))
         _profile = model_to_dict(profile, ('avatar', 'login', 'status', 'description'))
-        _profile['avatar'] = profile.avatar.name
+        _profile['avatar'] = profile.avatar.url if profile.avatar else ''
 
         return Response({
             'user': _profile,
             'hidden': ProfileViewSet.visibility_regulator(user, profile),
-            'friends': Profile.objects.filter(user_id__in=profile.friend.all().values('user_id')).values(),
+            'friends': Profile.objects.filter(id__in=profile.friend.all().values('user_id')).values(),
             'societies': Society.objects.filter(societymembers__user=profile).values()
         }, status=status.HTTP_200_OK)
 
