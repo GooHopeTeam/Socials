@@ -10,6 +10,8 @@ class ProfileSerializer(serializers.ModelSerializer):
 
 
 class SocietySerializer(serializers.ModelSerializer):
+    creator = serializers.IntegerField()
+
     class Meta:
         model = Society
         fields = '__all__'

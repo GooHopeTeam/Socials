@@ -6,7 +6,7 @@ from rest_framework import routers
 
 from dialogs.views import DialogsViewSet, MessageViewSet
 from content.views import IllustrationViewSet, VideoViewSet, NewsViewSet, ReviewViewSet
-from society.views import ProfileViewSet
+from society.views import ProfileViewSet, SocietyViewSet
 
 router = routers.DefaultRouter(trailing_slash=False)
 
@@ -17,6 +17,7 @@ router.register(r'content/illustrations', IllustrationViewSet, basename='illustr
 router.register(r'content/videos', VideoViewSet, basename='video')
 router.register(r'content/reviews', ReviewViewSet, basename='review')
 router.register(r'content/news', NewsViewSet, basename='news')
+router.register(r'societies', SocietyViewSet, basename='societies')
 
 urlpatterns = [
     path('admin/', admin.site.urls),

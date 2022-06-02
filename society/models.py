@@ -27,9 +27,12 @@ class Profile(models.Model):
 
 
 class Society(models.Model):
+    def upload_path(self, *args):
+        return f'society_{self.title}/{args[0]}'
+
     title = models.CharField(max_length=55, unique=True)
-    image = models.ImageField(upload_to=f'society_{title}/', blank=True, null=True, default=None)
-    creator_id = models.ForeignKey(Profile, on_delete=models.CASCADE)
+    image = models.ImageField(upload_to=upload_path, blank=True, null=True, default=None)
+    creator = models.ForeignKey(Profile, on_delete=models.CASCADE)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
     description = models.CharField(max_length=500, null=True, blank=True)

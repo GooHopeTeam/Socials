@@ -70,3 +70,29 @@ class SocietyViewSet(IRepositoryExtender,
     repository = SocietyRepository
     queryset = Society.objects.all()
     serializer_class = SocietySerializer
+
+    def create(self, request, *args, **kwargs):
+        data = request.data.dict()
+        creator = get_object_or_404(Profile, user_id=request.data['creator'])
+        data['creator'] = creator
+
+        return Response(model_to_dict(self.serializer_class().create(data)))
+
+    def list(self, request, *args, **kwargs):
+        def check_image(image) -> str:
+            return image.url if image else ''
+
+        societies = Society.objects.filter(societymembers__user__user_id=request.query_params.get('user_id'))
+        data = []
+
+        for society in societies:
+            data.append(model_to_dict(society))
+            data[-1]['image'] = check_image(society.image)
+            data[-1]['members'] = [model_to_dict(x.user) for x in society.societymembers_set.all()]
+            for member in data[-1]['members']:
+                member['avatar'] = check_image(member.get('avatar'))
+
+            data[-1]['creator'] = model_to_dict(society.creator)
+            data[-1]['creator']['avatar'] = check_image(data[-1]['creator'].get('creator'))
+
+        return Response(data, status=status.HTTP_200_OK)
